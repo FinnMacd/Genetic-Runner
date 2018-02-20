@@ -2,23 +2,25 @@ package main;
 
 import javax.swing.JFrame;
 
-import screen.Screen;
+import screen.ScreenController;
 
 public class Main {
 	
+	public static JFrame frame;
+	
 	public static void main(String[] args) {
 		
-		JFrame main = new JFrame("Gennetic Runner || pre alpha");
+		frame = new JFrame("Gennetic Runner || pre alpha");
 		
-		Screen screen = new Screen();
+		ScreenController screen = new ScreenController();
 		
-		main.add(screen);
-		main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		main.setResizable(false);
-		main.pack();
-		main.setLocationRelativeTo(null);
+		frame.add(screen);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
 		
-		main.setVisible(true);
+		frame.setVisible(true);
 		
 		screen.start();
 		
