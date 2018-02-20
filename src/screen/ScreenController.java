@@ -13,7 +13,7 @@ import main.Main;
 
 public class ScreenController extends Canvas implements Runnable{
 	
-	public static int GAME = 0;
+	public static int GAME = 0, WATCH = 1;
 	public static int width = 640, height = 480;
 	public static double scale = 1.0;
 	
@@ -45,9 +45,10 @@ public class ScreenController extends Canvas implements Runnable{
 		screens = new Screen[] {
 			
 			new GameScreen(this),
+			new WatchScreen(this)
 			
 		};
-		changeScreen(GAME);
+		changeScreen(WATCH);
 		
 		
 	}

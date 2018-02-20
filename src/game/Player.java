@@ -9,7 +9,7 @@ public class Player {
 	private double x,y,direction, speed, sightAngle = 0.08;
 	
 	private int[][] sightPoints;
-	private boolean sightCheck = false;
+	private boolean sightCheck = false, isAlive = false;
 	
 	public Player(int x, int y) {
 		this.x = x;
@@ -20,8 +20,11 @@ public class Player {
 	}
 	
 	public void update() {
+		if(!isAlive)return;
 		x += Math.cos(direction*Math.PI*2)*speed;
 		y += Math.sin(direction*Math.PI*2)*speed;
+		if(direction > 1.0)direction--;
+		if(direction < 0.0)direction++;
 	}
 	
 	public void draw(Graphics2D g) {
@@ -75,7 +78,7 @@ public class Player {
 	}
 	
 	public void setSpeed(double speed) {
-		this.speed = speed;
+		this.speed = (speed-0.5)*4;
 	}
 	
 	public void setPos(int x, int y) {
@@ -83,8 +86,19 @@ public class Player {
 		this.y = y;
 	}
 	
+	public void start() {
+		isAlive = true;
+	}
+	
+	public void reset(int x, int y) {
+		isAlive = false;
+		setPos(x,y);
+		speed = 0;
+		direction = 0;
+	}
+	
 	public void incrementDirection(double i) {
-		direction += i;
+		direction += (i-0.5)*0.02;
 	}
 	
 	public int getX() {
@@ -111,6 +125,14 @@ public class Player {
 		return checkRadius;
 	}
 	
+	public void kill() {
+		isAlive = false;
+	}
+	
+	public boolean isAlive() {
+		return isAlive;
+	}
+	
 	public int[] checkPoint() {
 		return new int[] {(int)(x+90*Math.cos((direction)*Math.PI*2)), (int)(y+90*Math.sin((direction)*Math.PI*2))};
 	}
@@ -127,6 +149,10 @@ public class Player {
 		
 		return ret;
 		
+	}
+	
+	public double getSightLength(int i) {
+		return ((double)sightPoints[i][2]/100.0);
 	}
 	
 }

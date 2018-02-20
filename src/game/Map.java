@@ -8,6 +8,8 @@ public class Map {
 	
 	private Obstacle[] objects;
 	
+	private int numUps, updateCap = 600;
+	
 	public Map() {
 		
 		player = new Player(100,100);
@@ -22,22 +24,38 @@ public class Map {
 		
 	}
 	
+	public void start() {
+		numUps = 0;
+		player.start();
+	}
+	
+	public void reset() {
+		player.reset(100, 100);
+	}
+	
 	public void update() {
 		
 		player.update();
 		
-	}
-	
-	public void draw(Graphics2D g) {
-		player.draw(g);
-		
 		for(Obstacle o:objects) {
-			o.draw(g);
-			if(!o.isSafe(player))player.setPos(100, 100);
+			if(!o.isSafe(player))player.kill();
 			if(o.shouldCheck(player))player.addSightPoints(o.sightPoints(player));
 		}
 		
 		player.checkSight();
+		
+		if(numUps > updateCap)player.kill();
+		numUps++;
+		
+	}
+	
+	public void draw(Graphics2D g) {
+		
+		for(Obstacle o:objects) {
+			o.draw(g);
+		}
+		player.draw(g);
+				
 		
 	}
 	
@@ -47,6 +65,10 @@ public class Map {
 	
 	public Player getPlayer() {
 		return player;
+	}
+	
+	public void setObstacles(Obstacle[] o) {
+		objects = o;
 	}
 	
 }
