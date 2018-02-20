@@ -11,6 +11,14 @@ public class Map {
 	public Map() {
 		
 		player = new Player(100,100);
+		objects = new Obstacle[0];
+		
+	}
+	
+	public Map(Obstacle[] o) {
+		
+		player = new Player(100,100);
+		objects = o;
 		
 	}
 	
@@ -22,6 +30,15 @@ public class Map {
 	
 	public void draw(Graphics2D g) {
 		player.draw(g);
+		
+		for(Obstacle o:objects) {
+			o.draw(g);
+			if(!o.isSafe(player))player.setPos(100, 100);
+			if(o.shouldCheck(player))player.addSightPoints(o.sightPoints(player));
+		}
+		
+		player.checkSight();
+		
 	}
 	
 	public void updatePlayer(double direction, double speed) {

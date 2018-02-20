@@ -3,6 +3,7 @@ package screen;
 import java.awt.Graphics2D;
 
 import game.Map;
+import game.Obstacle;
 
 public class GameScreen extends Screen{
 	
@@ -13,8 +14,8 @@ public class GameScreen extends Screen{
 	}
 	
 	public void init() {
-		map = new Map();
-		map.getPlayer().updateMovement(0, 1);
+		map = new Map(new Obstacle[] {new Obstacle(300,100), new Obstacle(300,200)});
+		map.getPlayer().updateMovement(0, 0);
 	}
 	
 	public void update() {
@@ -22,8 +23,11 @@ public class GameScreen extends Screen{
 		if(!ScreenController.input.focus)return;
 		
 		
-		if(ScreenController.input.left)map.getPlayer().incrementDirection(0.01);
-		if(ScreenController.input.right)map.getPlayer().incrementDirection(-0.01);
+		if(ScreenController.input.left)map.getPlayer().incrementDirection(-0.01);
+		if(ScreenController.input.right)map.getPlayer().incrementDirection(0.01);
+		if(ScreenController.input.up)map.getPlayer().setSpeed(2);
+		else if(ScreenController.input.down)map.getPlayer().setSpeed(-2);
+		else map.getPlayer().setSpeed(0);
 		
 		map.update();
 		
