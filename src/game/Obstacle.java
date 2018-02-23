@@ -15,10 +15,14 @@ public class Obstacle {
 		radius = 80;
 	}
 	
-	public void draw(Graphics2D g) {
+	public void draw(Graphics2D g, int screen) {
+		
+		x-= screen;
 		
 		g.setColor(colour);
 		g.fillOval(x-radius, y-radius, 2*radius, 2*radius);
+		
+		x+= screen;
 		
 	}
 	

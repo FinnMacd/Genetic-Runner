@@ -2,13 +2,15 @@ package game;
 
 import java.awt.Graphics2D;
 
+import screen.ScreenController;
+
 public class Map {
 	
 	private Player player;
 	
 	private Obstacle[] objects;
 	
-	private int numUps, updateCap = 800, startX = 60, startY = 240;
+	private int numUps, updateCap = 800, startX = 60, startY = 240, screenX = 0;
 	
 	public Map() {
 		
@@ -32,6 +34,8 @@ public class Map {
 	public void reset() {
 		player.reset(startX, startY);
 		player.randomizeDirection();
+		screenX = 0;
+		updateCap = 800;
 	}
 	
 	public void randomize() {
@@ -54,16 +58,25 @@ public class Map {
 		player.checkSight();
 		
 		if(numUps > updateCap)player.kill();
-		else numUps++;
+		else if(player.getX() > 600 && player.numUpgrades == 0) {
+			player.numUpgrades++;
+			updateCap += 600;
+		}else if(player.getX() > 1200 && player.numUpgrades == 1) {
+			player.numUpgrades++;
+			updateCap += 600;
+		}else numUps++;
+		
+		if(player.getX() - screenX > ScreenController.width/2)screenX += ((player.getX() - screenX)-ScreenController.width/2)*0.09;
+		else if(player.getX() - screenX < ScreenController.width/2 && screenX > 0)screenX -= (ScreenController.width/2 -(player.getX() - screenX))*0.09;
 		
 	}
 	
 	public void draw(Graphics2D g) {
 		
 		for(Obstacle o:objects) {
-			o.draw(g);
+			o.draw(g, screenX);
 		}
-		player.draw(g);
+		player.draw(g, screenX);
 				
 		
 	}

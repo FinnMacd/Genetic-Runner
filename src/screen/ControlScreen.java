@@ -27,7 +27,7 @@ public class ControlScreen extends Screen{
 		networks = new Network[100];
 		
 		for(int i = 0; i < networks.length; i++) {
-			networks[i] = new Network(3,12,2);
+			networks[i] = new Network(4,50,3);
 			networks[i].setID(i);
 		}
 		System.out.println(networks[currentTest].getScore());
@@ -66,9 +66,12 @@ public class ControlScreen extends Screen{
 				
 				doneTest = false;
 				
-				hasEvolved = false;
-				
 				WatchScreen.sum = 0;
+				
+				screenController.setDraw(true);
+				
+				evolve();
+				generation++;
 					
 			}
 			
@@ -81,14 +84,8 @@ public class ControlScreen extends Screen{
 			if(ScreenController.input.right) {
 				testing = true;
 				currentTest = 0;
-				screenController.setUPS(48000);
 				ScreenController.input.right = false;
-			}
-			
-			if(ScreenController.input.ctrl && !hasEvolved) {
-				evolve();
-				generation++;
-				hasEvolved = true;
+				screenController.setDraw(false);
 			}
 			
 		}

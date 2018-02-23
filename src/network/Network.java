@@ -206,7 +206,7 @@ public class Network {
 		
 		double[] data = toDoubleArry();
 		
-		for(int i = 0; i < data.length * 0.2 * random.nextDouble() + 1; i++) {
+		for(int i = 0; i < data.length * 0.05 * random.nextDouble() + 1; i++) {
 			int t = (int)(random.nextDouble()*data.length);
 			data[t] = data[t] * (random.nextDouble()-0.5) * 4;
 		}

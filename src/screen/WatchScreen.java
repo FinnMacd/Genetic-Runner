@@ -16,7 +16,7 @@ public class WatchScreen extends Screen{
 	
 	private Map map;
 	
-	private boolean autoRun = false;
+	private boolean autoRun = true;
 	private int killtime = 120;
 	
 	public WatchScreen(ScreenController screen) {
@@ -35,7 +35,19 @@ public class WatchScreen extends Screen{
 		map.setObstacles(new Obstacle[] {
 				new Obstacle(300,243),
 				new Obstacle(500,40),
-				new Obstacle(500,440)
+				new Obstacle(500,440),
+				new Obstacle(700,240),
+				new Obstacle(900,40),
+				new Obstacle(1000,115),
+				new Obstacle(900,440),
+				new Obstacle(1000,365),
+				new Obstacle(1220,240),
+				new Obstacle(1360,40),
+				new Obstacle(1360,440),
+				new Obstacle(1600,40),
+				new Obstacle(1700,140),
+				new Obstacle(1800,240),
+				new Obstacle(1900,340)
 		});
 	}
 	
@@ -60,20 +72,30 @@ public class WatchScreen extends Screen{
 			Matrix next = network.simpleTest(Matrix.rowMatrix(new double[] {
 					1-map.getPlayer().getSightLength(0),
 					1-map.getPlayer().getSightLength(1),
-					1-map.getPlayer().getSightLength(2), 
+					1-map.getPlayer().getSightLength(2),
+					map.getPlayer().carry
 //					map.getPlayer().getDirection(),
 //					map.getPlayer().getSpeed()
 					}));
 			map.getPlayer().incrementDirection(next.getAttribute(0, 0));
 			map.getPlayer().setSpeed(next.getAttribute(1, 0));
+			map.getPlayer().carry = next.getAttribute(2, 0);
 		}else {
 			killtime--;
-			if(autoRun && killtime < 0)screenController.changeScreen(ScreenController.CONTROL);
+			
+			if(autoRun && killtime < 0) {
+				sum+=network.getScore();
+				screenController.changeScreen(ScreenController.CONTROL);
+			}
 		}
 		
 		if(ScreenController.input.left) {
 			map.reset();
 			map.start();
+		}
+		if(ScreenController.input.right) {
+			screenController.setUPS(48000);
+			ScreenController.input.right = false;
 		}
 		if(ScreenController.input.up) {
 			screenController.setUPS((int)ScreenController.UPS + 600);
@@ -89,7 +111,6 @@ public class WatchScreen extends Screen{
 		}
 		if(ScreenController.input.ctrl && !map.getPlayer().isAlive()) {
 			screenController.changeScreen(ScreenController.CONTROL);
-			sum+=network.getScore();
 		}
 		
 		map.update();

@@ -20,7 +20,7 @@ public class ScreenController extends Canvas implements Runnable{
 	public static Inputs input;
 	
 	private Thread screenThread;
-	private boolean isRunning = false;
+	private boolean isRunning = false, draw = true;
 	
 	public static double UPS = 60.0, ns = 1000000000.0/UPS;
 	
@@ -87,15 +87,21 @@ public class ScreenController extends Canvas implements Runnable{
 			carry += System.nanoTime() - lastTime;
 			lastTime = System.nanoTime();
 			
-			while(carry >= ns) {
+			if(draw) {
+				while(carry >= ns) {
+					update();
+					updates++;
+					carry -= ns;
+				}
+
+				draw();
+				drawToScreen();
+				frames ++;
+			}else {
+				carry = 0;
 				update();
 				updates++;
-				carry -= ns;
 			}
-			
-			draw();
-			drawToScreen();
-			frames ++;
 			
 			if(System.currentTimeMillis() - printTime >= 1000) {
 				System.out.println("UPS: " + updates + " || Frames: " + frames);
@@ -154,6 +160,10 @@ public class ScreenController extends Canvas implements Runnable{
 	public void setUPS(int ups) {
 		UPS = ups;
 		ns = 1000000000.0/UPS;
+	}
+	
+	public void setDraw(boolean draw) {
+		this.draw = draw;
 	}
 	
 }

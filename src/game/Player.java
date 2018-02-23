@@ -13,6 +13,10 @@ public class Player {
 	private int[][] sightPoints;
 	private boolean sightCheck = false, isAlive = false;
 	
+	public int numUpgrades = 0;
+	
+	public double carry = 0;
+	
 	public Player(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -30,7 +34,9 @@ public class Player {
 		if(y < radius || y > ScreenController.height-radius)isAlive = false;
 	}
 	
-	public void draw(Graphics2D g) {
+	public void draw(Graphics2D g, int screen) {
+		
+		x -= screen;
 		
 		g.setColor(Color.GREEN);
 		g.fillOval((int)x-radius, (int)y-radius, 2*radius, 2*radius);
@@ -46,6 +52,8 @@ public class Player {
 		for(int [] pos:sightPoints) {
 			g.fillOval((int)x + pos[0]-5, (int)y + pos[1] - 5, 10, 10);
 		}
+		
+		x += screen;
 		
 	}
 	
@@ -118,7 +126,8 @@ public class Player {
 		setPos(x,y);
 		speed = 0;
 		direction = 0;
-		
+		numUpgrades = 0;
+		carry = 0;
 	}
 	
 	public void randomizeDirection() {
