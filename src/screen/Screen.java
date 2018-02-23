@@ -4,9 +4,9 @@ import java.awt.Graphics2D;
 
 public abstract class Screen {
 	
-	private ScreenController screenController;
+	protected ScreenController screenController;
 	
-	private boolean contInit = false, init = false;
+	protected boolean contInit = false, init = false;
 	
 	public Screen(ScreenController screen) {
 		screenController = screen;

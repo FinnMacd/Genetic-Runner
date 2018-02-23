@@ -8,18 +8,18 @@ public class Map {
 	
 	private Obstacle[] objects;
 	
-	private int numUps, updateCap = 600;
+	private int numUps, updateCap = 800, startX = 60, startY = 240;
 	
 	public Map() {
 		
-		player = new Player(100,100);
+		player = new Player(startX,startY);
 		objects = new Obstacle[0];
 		
 	}
 	
 	public Map(Obstacle[] o) {
 		
-		player = new Player(100,100);
+		player = new Player(startX,startY);
 		objects = o;
 		
 	}
@@ -30,7 +30,16 @@ public class Map {
 	}
 	
 	public void reset() {
-		player.reset(100, 100);
+		player.reset(startX, startY);
+		player.randomizeDirection();
+	}
+	
+	public void randomize() {
+		
+		for(Obstacle o: objects) {
+			o.setLocation((int)(200 + Math.random()*440), (int)(Math.random()*480));
+		}
+		
 	}
 	
 	public void update() {
@@ -45,7 +54,7 @@ public class Map {
 		player.checkSight();
 		
 		if(numUps > updateCap)player.kill();
-		numUps++;
+		else numUps++;
 		
 	}
 	
@@ -69,6 +78,10 @@ public class Map {
 	
 	public void setObstacles(Obstacle[] o) {
 		objects = o;
+	}
+	
+	public int getTime() {
+		return (updateCap+60-numUps)/60;
 	}
 	
 }

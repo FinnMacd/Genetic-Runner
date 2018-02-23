@@ -14,6 +14,18 @@ public class Matrix {
 		
 	}
 	
+	public Matrix(int height, int width, double[] data){
+		
+		matrix = new double[height][width];
+		this.width = width;
+		this.height = height;
+		
+		for(int i = 0; i < height*width; i++) {
+			matrix[i%height][i/height] = data[i];
+		}
+		
+	}
+	
 	public Matrix(double[][] matrix){
 		
 		this.matrix = (double[][])matrix.clone();

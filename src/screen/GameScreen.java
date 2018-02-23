@@ -14,6 +14,7 @@ public class GameScreen extends Screen{
 	}
 	
 	public void init() {
+		super.init();
 		map = new Map(new Obstacle[] {new Obstacle(300,100), new Obstacle(300,200)});
 		map.getPlayer().updateMovement(0, 0);
 	}

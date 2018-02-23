@@ -1,16 +1,21 @@
 package network;
 
+import java.util.Arrays;
+import java.util.Random;
+
 import math.Matrix;
 import math.MatrixMath;
 import math.Sigmoid;
 
 public class Network {
 	
+	public static Random random = new Random();
+	
 	private int inputSize, hiddenSize, outputSize;
 	
 	private Matrix inputWeights, inputBiases, hiddenWeights, hiddenBiases;
 	
-	private int score = 0;
+	private int score = 0, id = 0;
 	
 	private double startLimit = 1;
 	
@@ -95,6 +100,20 @@ public class Network {
 		
 	}
 	
+	public Network(int inputNeurons, int hiddenNeurons, int outputNeurons, double[] data) {
+		
+		inputWeights = new Matrix(inputNeurons,hiddenNeurons, Arrays.copyOfRange(data, 0, inputNeurons*hiddenNeurons));
+		inputBiases = new Matrix(1, hiddenNeurons, Arrays.copyOfRange(data, inputNeurons*hiddenNeurons, hiddenNeurons*(inputNeurons+1)));
+		
+		hiddenWeights = new Matrix(hiddenNeurons,outputNeurons, Arrays.copyOfRange(data, hiddenNeurons*(inputNeurons+1), hiddenNeurons*(inputNeurons+1) + hiddenNeurons*outputNeurons));
+		hiddenBiases = new Matrix(1, outputNeurons, Arrays.copyOfRange(data, hiddenNeurons*(inputNeurons+1) + hiddenNeurons*outputNeurons, hiddenNeurons*(inputNeurons+1) + hiddenNeurons*(outputNeurons+1)));
+		
+		inputSize = inputNeurons;
+		hiddenSize = hiddenNeurons;
+		outputSize = outputNeurons;
+		
+	}
+	
 	public Matrix[] test(Matrix inputs){
 		
 		Matrix delta1 = MatrixMath.add(MatrixMath.multiply(inputs, inputWeights), inputBiases);
@@ -154,5 +173,61 @@ public class Network {
 		
 	}
 	
+	public double[] toDoubleArry() {
+		
+		double[] ret = new double[hiddenSize*(inputSize + 1) + outputSize*(hiddenSize + 1)];
+		
+		double[] inputW = inputWeights.getSingleArray();
+		int i = 0;
+		for(; i < inputW.length; i++) {
+			ret[i] = inputW[i];
+		}
+		double[] inputB = inputBiases.getSingleArray();
+		int temp = i;
+		for(; i < temp + inputB.length; i++) {
+			ret[i] = inputB[i-temp];
+		}
+		double[] hiddenW = hiddenWeights.getSingleArray();
+		temp = i;
+		for(; i < temp + hiddenW.length; i++) {
+			ret[i] = hiddenW[i-temp];
+		}
+		double[] hiddenB = hiddenBiases.getSingleArray();
+		temp = i;
+		for(; i < temp + hiddenB.length; i++) {
+			ret[i] = hiddenB[i-temp];
+		}
+		
+		return ret;
+		
+	}
+	
+	public Network mutate() {
+		
+		double[] data = toDoubleArry();
+		
+		for(int i = 0; i < data.length * 0.2 * random.nextDouble() + 1; i++) {
+			int t = (int)(random.nextDouble()*data.length);
+			data[t] = data[t] * (random.nextDouble()-0.5) * 4;
+		}
+		
+		return new Network(inputSize,hiddenSize,outputSize,data);
+	}
+	
+	public void setScore(int i) {
+		score = i;
+	}
+	
+	public int getScore() {
+		return score;
+	}
+	
+	public void setID(int id) {
+		this.id = id;
+	}
+	
+	public int getID() {
+		return id;
+	}
 	
 }

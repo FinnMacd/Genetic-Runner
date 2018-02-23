@@ -3,10 +3,12 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import screen.ScreenController;
+
 public class Player {
 	
 	private int maxSpeed = 5, radius = 40, checkRadius = 60;
-	private double x,y,direction, speed, sightAngle = 0.08;
+	private double x,y,direction, speed, sightAngle = 0.09;
 	
 	private int[][] sightPoints;
 	private boolean sightCheck = false, isAlive = false;
@@ -25,6 +27,7 @@ public class Player {
 		y += Math.sin(direction*Math.PI*2)*speed;
 		if(direction > 1.0)direction--;
 		if(direction < 0.0)direction++;
+		if(y < radius || y > ScreenController.height-radius)isAlive = false;
 	}
 	
 	public void draw(Graphics2D g) {
@@ -67,6 +70,26 @@ public class Player {
 	}
 	
 	public void checkSight() {
+		
+		if(checkPoint()[1] < 60 || checkPoint()[1] > ScreenController.height - 60) {
+			
+			int[][] points = new int[3][3];
+			
+			for(int i = 0; i < 3; i++) {
+				
+				double length = 0;
+				points[i] = getSightPoints(i, length);
+				while(points[i][1] > 0 && points[i][1] < ScreenController.height && length <= 1) {
+					length += 0.05;
+					points[i] = getSightPoints(i, length);
+				}
+				
+			}
+			
+			addSightPoints(points);
+			
+		}
+		
 		if(!sightCheck) {
 			for(int i = 0; i < 3; i++) {
 				sightPoints[i] = getSightPoints(i,1.0);
@@ -78,7 +101,7 @@ public class Player {
 	}
 	
 	public void setSpeed(double speed) {
-		this.speed = (speed-0.5)*4;
+		this.speed = (speed-0.5)*8.0;
 	}
 	
 	public void setPos(int x, int y) {
@@ -95,10 +118,15 @@ public class Player {
 		setPos(x,y);
 		speed = 0;
 		direction = 0;
+		
+	}
+	
+	public void randomizeDirection() {
+		direction += 0.04*(Math.random()-0.5);
 	}
 	
 	public void incrementDirection(double i) {
-		direction += (i-0.5)*0.02;
+		direction += (i-0.5)*0.03;
 	}
 	
 	public int getX() {
@@ -131,6 +159,10 @@ public class Player {
 	
 	public boolean isAlive() {
 		return isAlive;
+	}
+	
+	public double getSpeed() {
+		return speed;
 	}
 	
 	public int[] checkPoint() {

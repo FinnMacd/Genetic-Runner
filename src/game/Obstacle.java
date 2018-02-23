@@ -12,13 +12,20 @@ public class Obstacle {
 		this.x = x;
 		this.y = y;
 		colour = Color.BLUE;
-		radius = 50;
+		radius = 80;
 	}
 	
 	public void draw(Graphics2D g) {
 		
 		g.setColor(colour);
 		g.fillOval(x-radius, y-radius, 2*radius, 2*radius);
+		
+	}
+	
+	public void setLocation(int x, int y) {
+		
+		this.x = x;
+		this.y = y;
 		
 	}
 	

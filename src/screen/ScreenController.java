@@ -13,7 +13,7 @@ import main.Main;
 
 public class ScreenController extends Canvas implements Runnable{
 	
-	public static int GAME = 0, WATCH = 1;
+	public static int GAME = 0, WATCH = 1, CONTROL = 2;
 	public static int width = 640, height = 480;
 	public static double scale = 1.0;
 	
@@ -21,6 +21,8 @@ public class ScreenController extends Canvas implements Runnable{
 	
 	private Thread screenThread;
 	private boolean isRunning = false;
+	
+	public static double UPS = 60.0, ns = 1000000000.0/UPS;
 	
 	private BufferedImage image;
 	private Graphics2D g2d;
@@ -45,10 +47,11 @@ public class ScreenController extends Canvas implements Runnable{
 		screens = new Screen[] {
 			
 			new GameScreen(this),
-			new WatchScreen(this)
+			new WatchScreen(this),
+			new ControlScreen(this)
 			
 		};
-		changeScreen(WATCH);
+		changeScreen(CONTROL);
 		
 		
 	}
@@ -73,8 +76,6 @@ public class ScreenController extends Canvas implements Runnable{
 	
 	public void run() {
 		
-		double UPS = 60.0;
-		double ns = 1000000000.0/UPS;
 		double lastTime = System.nanoTime();
 		double carry = 0;
 		
@@ -148,6 +149,11 @@ public class ScreenController extends Canvas implements Runnable{
 		Main.frame.pack();
 		Main.frame.setLocationRelativeTo(null);
 		
+	}
+	
+	public void setUPS(int ups) {
+		UPS = ups;
+		ns = 1000000000.0/UPS;
 	}
 	
 }
