@@ -7,8 +7,8 @@ import screen.ScreenController;
 
 public class Player {
 	
-	private int maxSpeed = 5, radius = 40, checkRadius = 60;
-	private double x,y,direction, speed, sightAngle = 0.09;
+	private int maxSpeed = 5, radius = 40, checkRadius = 100;
+	private double x,y,direction, speed, sightAngle = 0.1;
 	
 	private int[][] sightPoints;
 	private boolean sightCheck = false, isAlive = false;
@@ -31,7 +31,7 @@ public class Player {
 		y += Math.sin(direction*Math.PI*2)*speed;
 		if(direction > 1.0)direction--;
 		if(direction < 0.0)direction++;
-		if(y < radius || y > ScreenController.height-radius)isAlive = false;
+		if(x < radius || y < radius || y > ScreenController.height-radius)isAlive = false;
 	}
 	
 	public void draw(Graphics2D g, int screen) {
@@ -136,6 +136,10 @@ public class Player {
 	
 	public void incrementDirection(double i) {
 		direction += (i-0.5)*0.03;
+	}
+	
+	public void setSight(double d) {
+		sightAngle = d;
 	}
 	
 	public int getX() {

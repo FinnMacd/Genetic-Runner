@@ -45,9 +45,9 @@ public class WatchScreen extends Screen{
 				new Obstacle(1360,40),
 				new Obstacle(1360,440),
 				new Obstacle(1600,40),
-				new Obstacle(1700,140),
-				new Obstacle(1800,240),
-				new Obstacle(1900,340)
+				new Obstacle(1670,130),
+				new Obstacle(1740,220),
+				new Obstacle(1810,310)
 		});
 	}
 	
@@ -73,13 +73,11 @@ public class WatchScreen extends Screen{
 					1-map.getPlayer().getSightLength(0),
 					1-map.getPlayer().getSightLength(1),
 					1-map.getPlayer().getSightLength(2),
-					map.getPlayer().carry
-//					map.getPlayer().getDirection(),
-//					map.getPlayer().getSpeed()
+					map.getPlayer().getDirection()
 					}));
 			map.getPlayer().incrementDirection(next.getAttribute(0, 0));
 			map.getPlayer().setSpeed(next.getAttribute(1, 0));
-			map.getPlayer().carry = next.getAttribute(2, 0);
+			map.getPlayer().setSight(next.getAttribute(2, 0));
 		}else {
 			killtime--;
 			

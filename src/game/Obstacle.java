@@ -12,7 +12,7 @@ public class Obstacle {
 		this.x = x;
 		this.y = y;
 		colour = Color.BLUE;
-		radius = 80;
+		radius = 75;
 	}
 	
 	public void draw(Graphics2D g, int screen) {
